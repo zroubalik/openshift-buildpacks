@@ -24,6 +24,8 @@ kubectl create secret docker-registry push-secret \
     --docker-password=$REGISTRY_PASSWORD
 
 
+kubectl apply -f buildpacks.yaml
+
 kubectl apply -f resources.yaml -f sa.yaml -f pipeline.yaml
 ```
 
@@ -35,7 +37,7 @@ kubectl create -f run.yaml
 
 ## Delete resources
 ```bash
-kubectl delete -f resources.yaml -f sa.yaml -f pipeline.yaml
+kubectl delete -f resources.yaml -f sa.yaml -f pipeline.yaml -f buildpacks.yaml
 
 kubectl delete secret push-secret
 ```
