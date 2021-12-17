@@ -153,4 +153,4 @@ spec:
       script: |
         #!/usr/bin/env bash
         set -e
-        cat $(workspaces.platform.path)/report.toml | grep "digest" | cut -d'"' -f2 | cut -d'"' -f2 | tr -d '\n' | tee $(results.APP_IMAGE_DIGEST.path)
+        cat $(workspaces.platforms.path)/report.toml | grep "digest" | cut -d'"' -f2 | cut -d'"' -f2 | tr -d '\n' | tee $(results.APP_IMAGE_DIGEST.path)
