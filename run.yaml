@@ -6,11 +6,6 @@ spec:
   serviceAccountName: buildpacks-service-account
   pipelineRef:
     name: buildpacks-test-pipeline
-  taskRunSpecs:
-  - pipelineTaskName: buildpacks
-    taskPodTemplate:
-      securityContext:
-        runAsGroup: 1000700000            ### Need to set this based on the OpenShift project
   workspaces:
     - name: source-workspace
       subPath: source
@@ -20,21 +15,6 @@ spec:
       subPath: cache
       persistentVolumeClaim:
         claimName: buildpacks-source-pvc
-    - name: layers-workspace
-      subPath: layers
-      persistentVolumeClaim:
-        claimName: buildpacks-source-pvc
-    - name: platforms-workspace
-      subPath: platforms
-      persistentVolumeClaim:
-        claimName: buildpacks-source-pvc
-    - name: secret-workspace
-      secret:
-        secretName: push-secret
   params:
     - name: image
       value: docker.io/zroubalik/test-function
-    - name: USER_ID
-      value: "1000700000"                         ### Need to set this based on the OpenShift project
-    - name: GROUP_ID
-      value: "1000700000"                         ### Need to set this based on the OpenShift project
