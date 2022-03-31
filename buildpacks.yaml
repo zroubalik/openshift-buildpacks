@@ -90,6 +90,10 @@ spec:
         for path in "/tekton/home" "/layers" "$(workspaces.source.path)"; do
           echo "> Setting permissions on '$path'..."
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "$path"
+
+          if [[ "$path" == "$(workspaces.source.path)" ]]; then
+              chmod 775 "$(workspaces.source.path)"
+          fi
         done
 
         echo "> Parsing additional configuration..."
@@ -130,79 +134,6 @@ spec:
           mountPath: /layers
         - name: $(params.PLATFORM_DIR)
           mountPath: /platform
-    # - name: test
-    #   image: $(params.BUILDER_IMAGE)
-    #   imagePullPolicy: Always
-    #   env:
-    #     - name: DOCKER_CONFIG
-    #       value: $(workspaces.dockerconfig.path)
-    #   script: |
-    #     #!/usr/bin/env bash
-    #     set -e
-    #     # echo $DOCKER_CONFIG
-
-    #     # ls -al $DOCKER_CONFIG
-    #     # cat $DOCKER_CONFIG/.dockerconfigjson
-
-    #     ls -al $(workspaces.dockerconfig.path)
-    #     # cat $(workspaces.dockerconfig.path)/.dockerconfigjson
-
-    #     ls -al $HOME/.docker
-    #     rm -rf $HOME/.docker/config.json
-    #     ls -al $HOME/.docker
-
-    #   securityContext:
-    #     runAsUser: 1000
-    #     runAsGroup: 1000
-    # - name: test2
-    #   image: $(params.BUILDER_IMAGE)
-    #   imagePullPolicy: Always
-    #   env:
-    #     - name: DC
-    #       value: $(workspaces.dockerconfig.path)
-    #     - name: DOCKER_CONFIG
-
-    #   script: |
-    #     #!/usr/bin/env bash
-    #     set -e
-
-    #     rm -rf $HOME/.docker/config.json
-    #     ls -al $HOME/.docker
-
-    #     mkdir $HOME/do
-
-    #     #cp $DOCKER_CONFIG/.dockerconfigjson $HOME/.docker/config.json
-    #     cp $DC/.config.json $HOME/do/config.json
-    #     #cp $DC/.config.json $HOME/.docker/config.json
-
-    #     export DOCKER_CONFIG=$HOME/do
-
-    #     ls -al $DOCKER_CONFIG
-    #     #cat $HOME/.docker/config.json
-
-    #     /cnb/lifecycle/creator \
-    #     -app=$(workspaces.source.path)/$(params.SOURCE_SUBPATH) \
-    #     -cache-dir=$(workspaces.cache.path) \
-    #     -cache-image=$(params.CACHE_IMAGE) \
-    #     -uid=$(params.USER_ID) \
-    #     -gid=$(params.GROUP_ID) \
-    #     -layers=/layers \
-    #     -platform=/platform \
-    #     -report=/layers/report.toml \
-    #     -process-type=$(params.PROCESS_TYPE) \
-    #     -skip-restore=$(params.SKIP_RESTORE) \
-    #     -previous-image=$(params.APP_IMAGE) \
-    #     -run-image=$(params.RUN_IMAGE) \
-    #     $(params.APP_IMAGE)
-
-    #   volumeMounts:
-    #     - name: layers-dir
-    #       mountPath: /layers
-    #     - name: $(params.PLATFORM_DIR)
-    #       mountPath: /platform
-    #   securityContext:
-    #     runAsUser: 1000
-    #     runAsGroup: 1000
     - name: create
       image: $(params.BUILDER_IMAGE)
       imagePullPolicy: Always
