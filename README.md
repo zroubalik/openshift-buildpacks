@@ -22,12 +22,13 @@ kubectl create secret docker-registry push-secret \
     --docker-username=$REGISTRY_USER \
     --docker-password=$REGISTRY_PASSWORD
 
+#kubectl apply -f secret
+
 kubectl apply -f sa.yaml
 ```
 
 ### As kube-admin
 ```bash
-oc adm policy add-role-to-user edit -z buildpacks-service-account --namespace=$(oc project -q)
 oc adm policy add-role-to-user pipelines-scc-clusterrole -z buildpacks-service-account --namespace=$(oc project -q)
 ```
 
@@ -53,6 +54,5 @@ kubectl delete secret push-secret
 
 ### As kube-admin
 ```bash
-kubectl delete rolebinding edit
 kubectl delete rolebinding pipelines-scc-clusterrole 
 ```
