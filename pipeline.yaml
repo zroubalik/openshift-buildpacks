@@ -10,6 +10,8 @@ spec:
   workspaces:
     - name: source-workspace
     - name: cache-workspace
+    - name: dockerconfig-workspace
+      optional: true
   tasks:
     - name: fetch-repository
       taskRef:
@@ -26,7 +28,7 @@ spec:
           value: "true"
     - name: buildpacks
       taskRef:
-        name: buildpacks-openshift
+        name: buildpacks
       runAfter:
         - fetch-repository
       workspaces:
@@ -34,6 +36,8 @@ spec:
           workspace: source-workspace
         - name: cache
           workspace: cache-workspace
+        - name: dockerconfig
+          workspace: dockerconfig-workspace
       params:
         - name: APP_IMAGE
           value: "$(params.image)"

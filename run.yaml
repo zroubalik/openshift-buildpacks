@@ -3,7 +3,6 @@ kind: PipelineRun
 metadata:
   generateName: buildpacks-test-pipeline-run-
 spec:
-  serviceAccountName: buildpacks-service-account
   pipelineRef:
     name: buildpacks-test-pipeline
   workspaces:
@@ -15,6 +14,9 @@ spec:
       subPath: cache
       persistentVolumeClaim:
         claimName: buildpacks-source-pvc
+    - name: dockerconfig-workspace
+      secret:
+        secretName: push-secret
   params:
     - name: image
       value: docker.io/zroubalik/test-function
