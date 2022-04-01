@@ -26,7 +26,7 @@ spec:
       description: >-
         An optional workspace that allows providing a .docker/config.json
         file for cnb to access the container registry. The file should be placed at
-        the root of the Workspace.
+        the root of the Workspace with name config.json.
       optional: true
 
   params:
